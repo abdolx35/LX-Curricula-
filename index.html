@@ -2682,31 +2682,18 @@
   // =============================================
   // INIT
   // =============================================
-
-  window.addEventListener('DOMContentLoaded', () => {
+ window.addEventListener('DOMContentLoaded', () => {
     loadTheme();
     loadScores();
     initNavbar();
 
-    // زرار التالي للموبايل
-    document.addEventListener('click', function(e) {
-
-        if (e.target.closest('#nextBtn')) {
-            nextSection();
-        }
-
-    });
-
     // Hide loading overlay
     setTimeout(() => {
       document.getElementById('loadingOverlay').classList.add('hidden');
-
       setTimeout(() => {
         document.getElementById('loadingOverlay').style.display = 'none';
       }, 500);
-
     }, 1800);
-});
 
     // Init icons
     lucide.createIcons();
