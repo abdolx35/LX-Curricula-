@@ -1707,24 +1707,34 @@
       </div>
 
       <!-- Actions Bar -->
-      <div class="exam-actions-bar">
-        <div style="font-size:14px; color:var(--muted); font-weight:500;" id="questionCount">
-          يتم عرض 0 سؤال
-        </div>
-        <div style="display:flex; gap:10px; flex-wrap:wrap;">
-          <button class="btn-secondary" style="padding:10px 20px; font-size:13px;" onclick="resetCurrentTab()">
-            <i data-lucide="refresh-cw" width="15" height="15"></i>
-            إعادة هذا القسم
-          </button>
- <button class="btn-primary" id="nextBtn">
-  التالي
-</button>
-          <button class="btn-primary" style="padding:10px 20px; font-size:13px;" onclick="scrollToSection('stats')">
-            <i data-lucide="bar-chart-2" width="15" height="15"></i>
-            عرض النتائج
-          </button>
-        </div>
-      </div>
+     <div class="exam-actions-bar">
+  <div style="display:flex; align-items:center; gap: 12px;">
+    <button class="btn-secondary" id="prevBtn" style="padding:8px 16px; font-size:13px;" onclick="prevQuestion()">
+      <i data-lucide="arrow-right" width="16" height="16"></i>
+      السابق
+    </button>
+    
+    <div style="font-size:14px; color:var(--text); font-weight:700; min-width: 90px; text-align: center;" id="questionCount">
+      سؤال 1 من 20
+    </div>
+    
+    <button class="btn-primary" id="nextBtn" style="padding:8px 16px; font-size:13px;" onclick="nextQuestion()">
+      التالي
+      <i data-lucide="arrow-left" width="16" height="16"></i>
+    </button>
+  </div>
+
+  <div style="display:flex; gap:10px; flex-wrap:wrap;">
+    <button class="btn-secondary" style="padding:10px 20px; font-size:13px;" onclick="resetCurrentTab()">
+      <i data-lucide="refresh-cw" width="15" height="15"></i>
+      إعادة هذا القسم
+    </button>
+    <button class="btn-primary" style="padding:10px 20px; font-size:13px;" onclick="scrollToSection('stats')">
+      <i data-lucide="bar-chart-2" width="15" height="15"></i>
+      عرض النتائج
+    </button>
+  </div>
+</div>
     </div>
   </section>
 
@@ -2036,7 +2046,8 @@
 
   let currentTab = 'mcq';
   let searchTerm = '';
-
+  let currentQuestionIndex = 0;
+    
   // Score tracking per question
   let scores = {};
 
@@ -2170,7 +2181,7 @@
   // RENDER MCQ
   // =============================================
 
-  function renderMCQ(questions) {
+  function renderMCQ(questions, startIndex = 0) {
     return questions.map((q, idx) => {
       const answered = scores[q.id];
       const isAnswered = answered !== undefined;
@@ -2207,7 +2218,7 @@
 
       return `
         <div class="mcq-card" id="card_${q.id}" style="animation-delay:${idx * 0.04}s;">
-          <div class="q-number">${idx + 1}</div>
+          <div class="q-number">${startIndex + idx + 1}</div>
           <div class="q-text">${q.text}</div>
           <div class="options-list">${optionsHTML}</div>
           ${feedbackHTML}
@@ -2256,7 +2267,7 @@
   // RENDER TRUE/FALSE
   // =============================================
 
-  function renderTF(questions) {
+  function renderTF(questions, startIndex = 0) {
     return questions.map((q, idx) => {
       const answered = scores[q.id];
       const isAnswered = answered !== undefined;
@@ -2290,7 +2301,7 @@
 
       return `
         <div class="tf-card" id="card_${q.id}" style="animation-delay:${idx * 0.04}s;">
-          <div class="q-number">${idx + 1}</div>
+          <div class="q-number">${startIndex + idx + 1}</div>
           <div class="q-text">${q.text}</div>
           <div class="tf-buttons">
             <button class="${trueClass}"
@@ -2353,7 +2364,7 @@
   // RENDER FILL IN BLANK
   // =============================================
 
-  function renderFIB(questions) {
+  function renderFIB(questions, startIndex = 0) {
     return questions.map((q, idx) => {
       const answered = scores[q.id];
       const isAnswered = answered !== undefined;
@@ -2401,7 +2412,7 @@
 
       return `
         <div class="fib-card" id="card_${q.id}" style="animation-delay:${idx * 0.04}s;">
-          <div class="q-number">${idx + 1}</div>
+          <div class="q-number">${startIndex + idx + 1}</div>
           <div class="q-text">${q.text}</div>
           ${revealContent}
           ${isAnswered
@@ -2471,7 +2482,8 @@
   function switchTab(tab, btn) {
     currentTab = tab;
     searchTerm = document.getElementById('searchInput').value;
-
+    currentQuestionIndex = 0;
+    
     // Update tab buttons
     document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
@@ -2485,6 +2497,7 @@
 
   function filterQuestions() {
     searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    currentQuestionIndex = 0;
     renderQuestions();
   }
 
@@ -2505,45 +2518,63 @@
   // RENDER
   // =============================================
 
-  function renderQuestions() {
-    const container = document.getElementById('questionsContainer');
-    const filtered = getFilteredQuestions();
+ function renderQuestions(showSkeleton = true) {
+  const container = document.getElementById('questionsContainer');
+  const filtered = getFilteredQuestions();
 
-    // Skeleton loader
-    container.innerHTML = Array(Math.min(filtered.length || 3, 6)).fill(0).map(() => `
+  // تحديث حالة أزرار التالي والسابق (تفعيل / تعطيل)
+  const prevBtn = document.getElementById('prevBtn');
+  const nextBtn = document.getElementById('nextBtn');
+  if (prevBtn) {
+    prevBtn.disabled = (currentQuestionIndex === 0 || filtered.length === 0);
+    prevBtn.style.opacity = prevBtn.disabled ? '0.5' : '1';
+  }
+  if (nextBtn) {
+    nextBtn.disabled = (currentQuestionIndex === filtered.length - 1 || filtered.length === 0);
+    nextBtn.style.opacity = nextBtn.disabled ? '0.5' : '1';
+  }
+
+  // عرض تأثير التحميل فقط عند التبديل بين الأقسام
+  if (showSkeleton) {
+    container.innerHTML = `
       <div style="background:var(--bg); border:1.5px solid var(--border); border-radius:16px; padding:24px;">
         <div class="skeleton" style="height:20px; width:40px; margin-bottom:16px; border-radius:6px;"></div>
         <div class="skeleton" style="height:16px; width:90%; margin-bottom:8px;"></div>
         <div class="skeleton" style="height:16px; width:70%; margin-bottom:20px;"></div>
-        ${currentTab === 'mcq' ? Array(4).fill(0).map(() => `<div class="skeleton" style="height:44px; margin-bottom:8px; border-radius:10px;"></div>`).join('') : ''}
-        ${currentTab === 'tf' ? `<div style="display:flex;gap:10px;"><div class="skeleton" style="height:44px;flex:1;border-radius:10px;"></div><div class="skeleton" style="height:44px;flex:1;border-radius:10px;"></div></div>` : ''}
-        ${currentTab === 'fib' ? `<div class="skeleton" style="height:100px; border-radius:10px;"></div>` : ''}
+        <div class="skeleton" style="height:44px; margin-bottom:8px; border-radius:10px;"></div>
       </div>
-    `).join('');
-
-    // Render after short delay
-    setTimeout(() => {
-      if (filtered.length === 0) {
-        container.innerHTML = `
-          <div class="no-results">
-            <i data-lucide="search-x" width="48" height="48" style="color:var(--muted); margin-bottom:16px;"></i>
-            <div style="font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px;">لا توجد نتائج</div>
-            <div style="font-size:14px;">لم يتم العثور على أسئلة تطابق بحثك</div>
-          </div>
-        `;
-      } else {
-        let html = '';
-        if (currentTab === 'mcq') html = renderMCQ(filtered);
-        else if (currentTab === 'tf') html = renderTF(filtered);
-        else if (currentTab === 'fib') html = renderFIB(filtered);
-        container.innerHTML = html;
-      }
-
-      document.getElementById('questionCount').textContent = `يتم عرض ${filtered.length} سؤال`;
-      lucide.createIcons();
-      updateLiveScore();
-    }, 400);
+    `;
   }
+
+  const delay = showSkeleton ? 400 : 0; // سرعة التنقل
+
+  setTimeout(() => {
+    if (filtered.length === 0) {
+      container.innerHTML = `
+        <div class="no-results">
+          <i data-lucide="search-x" width="48" height="48" style="color:var(--muted); margin-bottom:16px;"></i>
+          <div style="font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px;">لا توجد نتائج</div>
+          <div style="font-size:14px;">لم يتم العثور على أسئلة تطابق بحثك</div>
+        </div>
+      `;
+      document.getElementById('questionCount').textContent = `لا توجد أسئلة`;
+    } else {
+      // اقتطاع السؤال الحالي فقط من المصفوفة
+      const currentQ = [filtered[currentQuestionIndex]];
+      let html = '';
+
+      // نمرر رقم السؤال الحالي (currentQuestionIndex) للحفاظ على الترقيم الصحيح
+      if (currentTab === 'mcq') html = renderMCQ(currentQ, currentQuestionIndex);
+      else if (currentTab === 'tf') html = renderTF(currentQ, currentQuestionIndex);
+      else if (currentTab === 'fib') html = renderFIB(currentQ, currentQuestionIndex);
+
+      container.innerHTML = html;
+      document.getElementById('questionCount').textContent = `سؤال ${currentQuestionIndex + 1} من ${filtered.length}`;
+    }
+    lucide.createIcons();
+    updateLiveScore();
+  }, delay);
+}
 
   // =============================================
   // SCORE
@@ -2768,6 +2799,20 @@
   }
 
 });
+    function nextQuestion() {
+  const filtered = getFilteredQuestions();
+  if (currentQuestionIndex < filtered.length - 1) {
+    currentQuestionIndex++;
+    renderQuestions(false); // نمرر false لمنع إعادة عرض تأثير التحميل (Skeleton) لتجربة أسرع
+  }
+}
+
+function prevQuestion() {
+  if (currentQuestionIndex > 0) {
+    currentQuestionIndex--;
+    renderQuestions(false);
+  }
+}
   </script>
 
 </body>
