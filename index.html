@@ -2739,43 +2739,6 @@
   });
     function goToNextSection() {
 
-  // من MCQ إلى TF
-  if(currentTab === 'mcq') {
-
-    switchTab(
-      'tf',
-      document.querySelectorAll('.tab-btn')[1]
-    );
-  }
-
-  // من TF إلى FIB
-  else if(currentTab === 'tf') {
-
-    switchTab(
-      'fib',
-      document.querySelectorAll('.tab-btn')[2]
-    );
-  }
-
-  // بعد FIB
-  else if(currentTab === 'fib') {
-
-    scrollToSection('stats');
-
-    showToast('🎉 ممتاز! خلصت كل الأقسام');
-  }
-
-  // يرجع لبداية القسم
-  setTimeout(() => {
-
-    document
-      .getElementById('exams')
-      .scrollIntoView({
-        behavior: 'smooth'
-      });
-
-  }, 200);
-}
   </script>
 
 </body>
