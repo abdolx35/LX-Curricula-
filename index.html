@@ -1,0 +1,2735 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>LX Curricula FIATS</title>
+
+  <!-- Google Fonts: Tajawal -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
+
+  <style>
+    /* =============================================
+       ROOT VARIABLES & BASE STYLES
+    ============================================= */
+    :root {
+      --bg: #FDFFF5;
+      --text: #111111;
+      --accent: #C10000;
+      --accent-light: #ff4444;
+      --accent-ultra-light: #fff0f0;
+      --card-bg: #ffffff;
+      --border: #e8ece0;
+      --muted: #6b7280;
+      --success: #16a34a;
+      --warning: #d97706;
+      --shadow: 0 4px 24px rgba(0,0,0,0.07);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.12);
+      --radius: 16px;
+      --radius-sm: 10px;
+      --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    [data-theme="dark"] {
+      --bg: #0f1117;
+      --text: #f0f4e8;
+      --accent: #ff4444;
+      --accent-light: #ff6666;
+      --accent-ultra-light: #2a1010;
+      --card-bg: #1a1d27;
+      --border: #2a2d3a;
+      --muted: #9ca3af;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 40px rgba(0,0,0,0.6);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Tajawal', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 0.4s ease, color 0.4s ease;
+      overflow-x: hidden;
+      line-height: 1.7;
+    }
+
+    /* =============================================
+       SCROLLBAR
+    ============================================= */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--accent); border-radius: 3px; }
+
+    /* =============================================
+       NAVBAR
+    ============================================= */
+    #navbar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      left: 0;
+      z-index: 1000;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: transparent;
+      transition: var(--transition);
+    }
+
+    #navbar.scrolled {
+      background: rgba(253, 255, 245, 0.85);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      box-shadow: 0 2px 20px rgba(0,0,0,0.06);
+      padding: 12px 24px;
+    }
+
+    [data-theme="dark"] #navbar.scrolled {
+      background: rgba(15, 17, 23, 0.85);
+    }
+
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    .logo-icon {
+      width: 42px;
+      height: 42px;
+      background: linear-gradient(135deg, var(--accent) 0%, #8b0000 100%);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-size: 16px;
+      letter-spacing: -0.5px;
+      box-shadow: 0 4px 14px rgba(193,0,0,0.35);
+      transition: var(--transition);
+    }
+
+    .logo-icon:hover { transform: rotate(-5deg) scale(1.1); }
+
+    .logo-text {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .logo-name {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--text);
+      line-height: 1.1;
+      letter-spacing: -0.3px;
+    }
+
+    .logo-sub {
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--accent);
+      letter-spacing: 0.5px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 14px;
+      border-radius: 8px;
+      transition: var(--transition);
+      position: relative;
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: 4px;
+      left: 14px;
+      right: 14px;
+      height: 2px;
+      background: var(--accent);
+      border-radius: 2px;
+      transform: scaleX(0);
+      transition: transform 0.3s ease;
+    }
+
+    .nav-links a:hover { color: var(--text); }
+    .nav-links a:hover::after { transform: scaleX(1); }
+    .nav-links a.active { color: var(--accent); }
+    .nav-links a.active::after { transform: scaleX(1); }
+
+    .nav-actions {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    #darkToggle {
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: var(--transition);
+    }
+
+    #darkToggle:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: scale(1.05);
+    }
+
+    .hamburger {
+      display: none;
+      width: 40px;
+      height: 40px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      cursor: pointer;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      transition: var(--transition);
+    }
+
+    .hamburger span {
+      width: 18px;
+      height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+
+    /* Mobile Menu */
+    #mobileMenu {
+      position: fixed;
+      top: 70px;
+      right: 16px;
+      left: 16px;
+      background: var(--card-bg);
+      border-radius: var(--radius);
+      border: 1px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      padding: 16px;
+      z-index: 999;
+      opacity: 0;
+      pointer-events: none;
+      transform: translateY(-10px);
+      transition: var(--transition);
+    }
+
+    #mobileMenu.open {
+      opacity: 1;
+      pointer-events: all;
+      transform: translateY(0);
+    }
+
+    #mobileMenu a {
+      display: block;
+      text-decoration: none;
+      color: var(--text);
+      font-size: 15px;
+      font-weight: 500;
+      padding: 12px 16px;
+      border-radius: 10px;
+      transition: var(--transition);
+    }
+
+    #mobileMenu a:hover {
+      background: var(--accent-ultra-light);
+      color: var(--accent);
+    }
+
+    /* =============================================
+       HERO SECTION
+    ============================================= */
+    #hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      padding: 120px 24px 80px;
+    }
+
+    .hero-bg-grid {
+      position: absolute;
+      inset: 0;
+      background-image:
+        linear-gradient(rgba(193,0,0,0.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(193,0,0,0.04) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+
+    .hero-blob {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: blobFloat 8s ease-in-out infinite;
+    }
+
+    .blob-1 {
+      width: 400px;
+      height: 400px;
+      background: radial-gradient(circle, rgba(193,0,0,0.12), transparent);
+      top: -100px;
+      right: -100px;
+    }
+
+    .blob-2 {
+      width: 300px;
+      height: 300px;
+      background: radial-gradient(circle, rgba(193,0,0,0.08), transparent);
+      bottom: -80px;
+      left: -80px;
+      animation-delay: 4s;
+    }
+
+    @keyframes blobFloat {
+      0%, 100% { transform: translate(0, 0) scale(1); }
+      33% { transform: translate(20px, -20px) scale(1.05); }
+      66% { transform: translate(-15px, 15px) scale(0.95); }
+    }
+
+    .hero-content {
+      max-width: 800px;
+      text-align: center;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-ultra-light);
+      border: 1px solid rgba(193,0,0,0.2);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+      animation: fadeInDown 0.6s ease both;
+    }
+
+    .hero-title {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 900;
+      line-height: 1.15;
+      color: var(--text);
+      margin-bottom: 20px;
+      animation: fadeInUp 0.7s ease 0.1s both;
+      letter-spacing: -1px;
+    }
+
+    .hero-title .accent { color: var(--accent); }
+
+    .hero-desc {
+      font-size: clamp(1rem, 2vw, 1.2rem);
+      color: var(--muted);
+      margin-bottom: 40px;
+      font-weight: 400;
+      max-width: 600px;
+      margin-left: auto;
+      margin-right: auto;
+      animation: fadeInUp 0.7s ease 0.2s both;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 16px;
+      flex-wrap: wrap;
+      animation: fadeInUp 0.7s ease 0.3s both;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--accent), #8b0000);
+      color: white;
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 700;
+      cursor: pointer;
+      border: none;
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: var(--transition);
+      box-shadow: 0 6px 20px rgba(193,0,0,0.35);
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 10px 30px rgba(193,0,0,0.45);
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      color: var(--text);
+      padding: 14px 32px;
+      border-radius: 12px;
+      font-size: 15px;
+      font-weight: 600;
+      cursor: pointer;
+      border: 1.5px solid var(--border);
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      transition: var(--transition);
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      transform: translateY(-2px);
+      box-shadow: var(--shadow);
+    }
+
+    .hero-stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      margin-top: 60px;
+      animation: fadeInUp 0.7s ease 0.4s both;
+      flex-wrap: wrap;
+    }
+
+    .hero-stat {
+      text-align: center;
+    }
+
+    .hero-stat .number {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+      line-height: 1;
+    }
+
+    .hero-stat .label {
+      font-size: 13px;
+      color: var(--muted);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+
+    .stat-divider {
+      width: 1px;
+      height: 40px;
+      background: var(--border);
+    }
+
+    /* =============================================
+       SECTION STYLES
+    ============================================= */
+    section {
+      padding: 80px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    .section-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--accent-ultra-light);
+      color: var(--accent);
+      font-size: 13px;
+      font-weight: 600;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+      border: 1px solid rgba(193,0,0,0.15);
+    }
+
+    .section-title {
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
+      font-weight: 800;
+      color: var(--text);
+      margin-bottom: 14px;
+      letter-spacing: -0.5px;
+    }
+
+    .section-desc {
+      font-size: 16px;
+      color: var(--muted);
+      max-width: 560px;
+      margin: 0 auto;
+      font-weight: 400;
+    }
+
+    /* =============================================
+       MATERIALS SECTION
+    ============================================= */
+    #materials-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .material-card {
+      background: var(--card-bg);
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      overflow: hidden;
+      transition: var(--transition);
+      cursor: pointer;
+      position: relative;
+    }
+
+    .material-card::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      right: 0;
+      left: 0;
+      height: 4px;
+      background: linear-gradient(90deg, var(--accent), #ff4444);
+    }
+
+    .material-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: rgba(193,0,0,0.2);
+    }
+
+    .material-icon-wrap {
+      width: 60px;
+      height: 60px;
+      background: linear-gradient(135deg, var(--accent-ultra-light), rgba(193,0,0,0.05));
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent);
+      border: 1px solid rgba(193,0,0,0.12);
+    }
+
+    .material-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      padding: 4px 10px;
+      border-radius: 6px;
+      font-size: 11px;
+      font-weight: 600;
+    }
+
+    /* =============================================
+       EXAM SECTION
+    ============================================= */
+    #exam-wrapper {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 24px;
+      overflow: hidden;
+      box-shadow: var(--shadow);
+    }
+
+    .exam-header-bar {
+      padding: 28px 32px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Search */
+    .search-wrap {
+      position: relative;
+      flex: 1;
+      max-width: 360px;
+    }
+
+    .search-wrap input {
+      width: 100%;
+      padding: 10px 40px 10px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .search-wrap input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(193,0,0,0.1); }
+    .search-wrap input::placeholder { color: var(--muted); }
+
+    .search-icon {
+      position: absolute;
+      left: 12px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--muted);
+    }
+
+    /* Tabs */
+    .exam-tabs {
+      display: flex;
+      gap: 8px;
+      padding: 20px 32px;
+      border-bottom: 1px solid var(--border);
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    }
+    .exam-tabs::-webkit-scrollbar { display: none; }
+
+    .tab-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--muted);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .tab-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--accent-ultra-light);
+    }
+
+    .tab-btn.active {
+      background: linear-gradient(135deg, var(--accent), #8b0000);
+      color: white;
+      border-color: transparent;
+      box-shadow: 0 4px 14px rgba(193,0,0,0.3);
+    }
+
+    .tab-count {
+      background: rgba(255,255,255,0.25);
+      color: inherit;
+      padding: 2px 8px;
+      border-radius: 20px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    .tab-btn:not(.active) .tab-count {
+      background: var(--border);
+      color: var(--muted);
+    }
+
+    /* Questions */
+    .questions-grid {
+      padding: 28px 32px;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(min(100%, 520px), 1fr));
+      gap: 20px;
+    }
+
+    /* MCQ Card */
+    .mcq-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: var(--transition);
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .mcq-card:hover { box-shadow: var(--shadow); }
+
+    .q-number {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--accent);
+      color: white;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .q-text {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 16px;
+      line-height: 1.6;
+    }
+
+    .options-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .option-btn {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      cursor: pointer;
+      text-align: right;
+      transition: var(--transition);
+      width: 100%;
+    }
+
+    .option-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: var(--accent-ultra-light);
+    }
+
+    .option-btn.correct {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: #15803d;
+    }
+
+    [data-theme="dark"] .option-btn.correct {
+      background: #052e16;
+      color: #4ade80;
+    }
+
+    .option-btn.wrong {
+      border-color: var(--accent);
+      background: #fff5f5;
+      color: var(--accent);
+    }
+
+    [data-theme="dark"] .option-btn.wrong {
+      background: #2a0505;
+    }
+
+    .option-btn:disabled { cursor: default; }
+
+    .option-letter {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 26px;
+      height: 26px;
+      min-width: 26px;
+      border-radius: 7px;
+      background: var(--border);
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 700;
+      transition: var(--transition);
+    }
+
+    .option-btn.correct .option-letter { background: #16a34a; color: white; }
+    .option-btn.wrong .option-letter { background: var(--accent); color: white; }
+    .option-btn:hover:not(:disabled) .option-letter { background: var(--accent); color: white; }
+
+    .q-feedback {
+      margin-top: 12px;
+      font-size: 13px;
+      font-weight: 600;
+      padding: 8px 14px;
+      border-radius: 8px;
+      display: none;
+    }
+
+    .q-feedback.show { display: flex; align-items: center; gap: 8px; }
+    .q-feedback.correct-fb { color: #15803d; background: #f0fdf4; }
+    .q-feedback.wrong-fb { color: var(--accent); background: #fff5f5; }
+
+    [data-theme="dark"] .q-feedback.correct-fb { background: #052e16; color: #4ade80; }
+    [data-theme="dark"] .q-feedback.wrong-fb { background: #2a0505; }
+
+    /* True/False Card */
+    .tf-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: var(--transition);
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .tf-card:hover { box-shadow: var(--shadow); }
+
+    .tf-buttons {
+      display: flex;
+      gap: 10px;
+      margin-top: 14px;
+    }
+
+    .tf-btn {
+      flex: 1;
+      padding: 12px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .tf-btn:hover:not(:disabled) {
+      transform: translateY(-1px);
+    }
+
+    .tf-btn.true-btn:hover:not(:disabled) {
+      border-color: #16a34a;
+      background: #f0fdf4;
+      color: #16a34a;
+    }
+
+    .tf-btn.false-btn:hover:not(:disabled) {
+      border-color: var(--accent);
+      background: #fff5f5;
+      color: var(--accent);
+    }
+
+    .tf-btn.correct { border-color: #16a34a; background: #f0fdf4; color: #15803d; }
+    .tf-btn.wrong { border-color: var(--accent); background: #fff5f5; color: var(--accent); }
+    .tf-btn:disabled { cursor: default; }
+
+    [data-theme="dark"] .tf-btn.correct { background: #052e16; color: #4ade80; }
+    [data-theme="dark"] .tf-btn.wrong { background: #2a0505; color: #f87171; }
+
+    /* Fill in the Blank */
+    .fib-card {
+      background: var(--bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 24px;
+      transition: var(--transition);
+      animation: fadeIn 0.4s ease both;
+    }
+
+    .fib-card:hover { box-shadow: var(--shadow); }
+
+    /* Flip Card for FIB */
+    .flip-card {
+      width: 100%;
+      height: 180px;
+      perspective: 1000px;
+      cursor: pointer;
+      margin-top: 16px;
+    }
+
+    .flip-card-inner {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      transform-style: preserve-3d;
+      transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+
+    .flip-card.flipped .flip-card-inner {
+      transform: rotateY(180deg);
+    }
+
+    .flip-card-front,
+    .flip-card-back {
+      position: absolute;
+      inset: 0;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 10px;
+      backface-visibility: hidden;
+      -webkit-backface-visibility: hidden;
+    }
+
+    .flip-card-front {
+      background: var(--card-bg);
+      border: 2px dashed var(--border);
+      color: var(--muted);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .flip-card-back {
+      background: linear-gradient(135deg, var(--accent), #8b0000);
+      color: white;
+      transform: rotateY(180deg);
+      font-size: 1.6rem;
+      font-weight: 900;
+    }
+
+    .flip-hint {
+      font-size: 12px;
+      opacity: 0.7;
+    }
+
+    /* FIB Input Mode */
+    .fib-input-wrap {
+      display: flex;
+      gap: 8px;
+      margin-top: 14px;
+    }
+
+    .fib-input {
+      flex: 1;
+      padding: 12px 16px;
+      border-radius: 10px;
+      border: 1.5px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text);
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 500;
+      outline: none;
+      transition: var(--transition);
+    }
+
+    .fib-input:focus { border-color: var(--accent); box-shadow: 0 0 0 3px rgba(193,0,0,0.1); }
+    .fib-input::placeholder { color: var(--muted); }
+
+    .fib-check-btn {
+      padding: 12px 20px;
+      background: var(--accent);
+      color: white;
+      border: none;
+      border-radius: 10px;
+      font-family: 'Tajawal', sans-serif;
+      font-size: 14px;
+      font-weight: 700;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .fib-check-btn:hover { background: #8b0000; transform: scale(1.03); }
+
+    /* No results */
+    .no-results {
+      text-align: center;
+      padding: 60px 24px;
+      color: var(--muted);
+      grid-column: 1 / -1;
+    }
+
+    /* =============================================
+       STATISTICS SECTION
+    ============================================= */
+    #stats-section {
+      max-width: 1200px;
+    }
+
+    .stats-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      margin-bottom: 32px;
+    }
+
+    .stat-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px 24px;
+      text-align: center;
+      transition: var(--transition);
+      position: relative;
+      overflow: hidden;
+    }
+
+    .stat-card::before {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, var(--accent), #ff4444);
+      transform: scaleX(0);
+      transition: transform 0.4s ease;
+    }
+
+    .stat-card:hover::before { transform: scaleX(1); }
+    .stat-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+    .stat-icon {
+      width: 52px;
+      height: 52px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 14px;
+    }
+
+    .stat-value {
+      font-size: 2.4rem;
+      font-weight: 900;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+
+    .stat-label {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* Progress Section */
+    .progress-card {
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px;
+      box-shadow: var(--shadow);
+    }
+
+    .progress-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .progress-title {
+      font-size: 17px;
+      font-weight: 700;
+      color: var(--text);
+    }
+
+    .progress-percent {
+      font-size: 2rem;
+      font-weight: 900;
+      color: var(--accent);
+    }
+
+    .progress-bar-wrap {
+      height: 12px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+
+    .progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #ff4444);
+      border-radius: 100px;
+      transition: width 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+      width: 0%;
+    }
+
+    .progress-details {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .progress-detail {
+      text-align: center;
+      padding: 16px;
+      background: var(--bg);
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border);
+    }
+
+    .pd-value {
+      font-size: 1.5rem;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .pd-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+      margin-top: 4px;
+    }
+
+    /* Exam Actions */
+    .exam-actions-bar {
+      padding: 20px 32px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    /* =============================================
+       FOOTER
+    ============================================= */
+    footer {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      padding: 40px 24px;
+      text-align: center;
+    }
+
+    .footer-logo {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .footer-name {
+      font-size: 18px;
+      font-weight: 800;
+      color: var(--text);
+    }
+
+    .footer-dev {
+      font-size: 14px;
+      color: var(--muted);
+      font-weight: 400;
+    }
+
+    .footer-dev span { color: var(--accent); font-weight: 600; }
+
+    /* =============================================
+       TOAST NOTIFICATIONS
+    ============================================= */
+    #toastContainer {
+      position: fixed;
+      bottom: 90px;
+      left: 24px;
+      z-index: 9999;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      pointer-events: none;
+    }
+
+    .toast {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 14px 18px;
+      border-radius: 12px;
+      background: var(--card-bg);
+      border: 1.5px solid var(--border);
+      box-shadow: var(--shadow-lg);
+      font-size: 14px;
+      font-weight: 600;
+      color: var(--text);
+      pointer-events: all;
+      min-width: 280px;
+      animation: slideInUp 0.35s cubic-bezier(0.4, 0, 0.2, 1) both;
+    }
+
+    .toast.removing { animation: slideOutDown 0.35s cubic-bezier(0.4, 0, 0.2, 1) both; }
+    .toast-icon { font-size: 18px; }
+
+    /* =============================================
+       FLOATING ACTION BUTTONS
+    ============================================= */
+    #fabContainer {
+      position: fixed;
+      bottom: 24px;
+      left: 24px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      z-index: 500;
+    }
+
+    .fab {
+      width: 48px;
+      height: 48px;
+      border-radius: 14px;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: var(--shadow-lg);
+      transition: var(--transition);
+      font-family: 'Tajawal', sans-serif;
+    }
+
+    .fab:hover { transform: scale(1.1) translateY(-2px); }
+
+    .fab-main {
+      background: linear-gradient(135deg, var(--accent), #8b0000);
+      color: white;
+      width: 52px;
+      height: 52px;
+      border-radius: 16px;
+    }
+
+    .fab-scroll-top {
+      background: var(--card-bg);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      opacity: 0;
+      pointer-events: none;
+      transition: var(--transition);
+    }
+
+    .fab-scroll-top.visible { opacity: 1; pointer-events: all; }
+
+    /* =============================================
+       SKELETON LOADING
+    ============================================= */
+    .skeleton {
+      background: linear-gradient(90deg, var(--border) 25%, var(--bg) 50%, var(--border) 75%);
+      background-size: 200% 100%;
+      animation: shimmer 1.5s infinite;
+      border-radius: 8px;
+    }
+
+    @keyframes shimmer {
+      0% { background-position: 200% 0; }
+      100% { background-position: -200% 0; }
+    }
+
+    /* =============================================
+       SCROLL REVEAL
+    ============================================= */
+    .reveal {
+      opacity: 0;
+      transform: translateY(30px);
+      transition: opacity 0.6s ease, transform 0.6s ease;
+    }
+
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* =============================================
+       ANIMATIONS
+    ============================================= */
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInDown {
+      from { opacity: 0; transform: translateY(-16px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes slideOutDown {
+      from { opacity: 1; transform: translateY(0); }
+      to { opacity: 0; transform: translateY(20px); }
+    }
+
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); }
+      50% { transform: scale(1.05); }
+    }
+
+    /* Section separator */
+    .section-sep {
+      max-width: 1200px;
+      margin: 0 auto;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+
+    /* =============================================
+       RESPONSIVE
+    ============================================= */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .hamburger { display: flex; }
+
+      .hero-stats { gap: 20px; }
+      .stat-divider { display: none; }
+
+      .questions-grid { padding: 20px 16px; grid-template-columns: 1fr; }
+      .exam-header-bar { padding: 20px 16px; }
+      .exam-tabs { padding: 12px 16px; }
+      .exam-actions-bar { padding: 16px; }
+
+      .progress-details { grid-template-columns: 1fr; }
+
+      section { padding: 60px 16px; }
+
+      .flip-card { height: 140px; }
+
+      .fib-input-wrap { flex-direction: column; }
+    }
+
+    @media (max-width: 480px) {
+      .hero-actions { flex-direction: column; width: 100%; }
+      .btn-primary, .btn-secondary { width: 100%; justify-content: center; }
+      .tf-buttons { flex-direction: column; }
+    }
+
+    /* Animated counter */
+    @keyframes countUp {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* Glow effect on accent elements */
+    .btn-primary:active { transform: scale(0.97); }
+    .tab-btn:active { transform: scale(0.97); }
+
+    /* Section full-width wrapper */
+    .section-full {
+      background: var(--card-bg);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+
+    /* Category badge colors */
+    .badge-mcq { background: rgba(193,0,0,0.08); color: var(--accent); border: 1px solid rgba(193,0,0,0.15); }
+    .badge-tf  { background: rgba(22,163,74,0.08); color: #16a34a; border: 1px solid rgba(22,163,74,0.15); }
+    .badge-fib { background: rgba(234,179,8,0.08); color: #b45309; border: 1px solid rgba(234,179,8,0.15); }
+
+    /* Answered indicator dot */
+    .answered-dot {
+      width: 8px; height: 8px;
+      border-radius: 50%;
+      background: #16a34a;
+      display: inline-block;
+      margin-right: 6px;
+      animation: pulse 2s infinite;
+    }
+
+    /* Loading overlay */
+    #loadingOverlay {
+      position: fixed;
+      inset: 0;
+      background: var(--bg);
+      z-index: 9999;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 20px;
+      transition: opacity 0.5s ease;
+    }
+
+    #loadingOverlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
+    .loader-logo {
+      width: 64px;
+      height: 64px;
+      background: linear-gradient(135deg, var(--accent), #8b0000);
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      font-weight: 900;
+      animation: pulse 1.2s ease-in-out infinite;
+      box-shadow: 0 8px 30px rgba(193,0,0,0.4);
+    }
+
+    .loader-text {
+      font-size: 15px;
+      color: var(--muted);
+      font-weight: 500;
+      animation: fadeIn 0.5s ease 0.3s both;
+    }
+
+    .loader-bar {
+      width: 200px;
+      height: 4px;
+      background: var(--border);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .loader-bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--accent), #ff4444);
+      border-radius: 100px;
+      animation: loaderAnim 1.5s ease-in-out infinite;
+    }
+
+    @keyframes loaderAnim {
+      0% { width: 0%; margin-right: 100%; }
+      50% { width: 60%; margin-right: 0%; }
+      100% { width: 0%; margin-right: 0%; margin-left: 100%; }
+    }
+
+    /* Score badge */
+    .score-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 16px;
+      background: var(--accent-ultra-light);
+      color: var(--accent);
+      border-radius: 100px;
+      font-size: 14px;
+      font-weight: 700;
+      border: 1px solid rgba(193,0,0,0.2);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- =============================
+       LOADING OVERLAY
+  ============================== -->
+  <div id="loadingOverlay">
+    <div class="loader-logo">LX</div>
+    <div class="loader-bar"><div class="loader-bar-fill"></div></div>
+    <div class="loader-text">جاري تحميل المنصة التعليمية...</div>
+  </div>
+
+  <!-- =============================
+       TOAST CONTAINER
+  ============================== -->
+  <div id="toastContainer"></div>
+
+  <!-- =============================
+       FLOATING ACTIONS
+  ============================== -->
+  <div id="fabContainer">
+    <button class="fab fab-scroll-top" id="scrollTopBtn" title="العودة للأعلى" onclick="window.scrollTo({top:0,behavior:'smooth'})">
+      <i data-lucide="arrow-up" width="20" height="20"></i>
+    </button>
+    <button class="fab fab-main" id="fabMain" title="إعادة الاختبار" onclick="resetAllExams()">
+      <i data-lucide="rotate-ccw" width="22" height="22"></i>
+    </button>
+  </div>
+
+  <!-- =============================
+       NAVBAR
+  ============================== -->
+  <nav id="navbar">
+    <div class="nav-logo" onclick="scrollToSection('hero')">
+      <div class="logo-icon">LX</div>
+      <div class="logo-text">
+        <span class="logo-name">LX Curricula</span>
+        <span class="logo-sub">FIATS Platform</span>
+      </div>
+    </div>
+
+    <ul class="nav-links">
+      <li><a href="#" onclick="scrollToSection('hero');return false;">الرئيسية</a></li>
+      <li><a href="#" onclick="scrollToSection('materials');return false;">المواد</a></li>
+      <li><a href="#" onclick="scrollToSection('exams');return false;">الاختبارات</a></li>
+      <li><a href="#" onclick="scrollToSection('stats');return false;">الإحصائيات</a></li>
+    </ul>
+
+    <div class="nav-actions">
+      <button id="darkToggle" onclick="toggleDark()" title="الوضع الليلي">
+        <i data-lucide="moon" width="18" height="18" id="darkIcon"></i>
+      </button>
+      <button class="hamburger" id="hamburger" onclick="toggleMobileMenu()">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu -->
+  <div id="mobileMenu">
+    <a href="#" onclick="scrollToSection('hero');closeMobileMenu();return false;">🏠 الرئيسية</a>
+    <a href="#" onclick="scrollToSection('materials');closeMobileMenu();return false;">📚 المواد الدراسية</a>
+    <a href="#" onclick="scrollToSection('exams');closeMobileMenu();return false;">✏️ الاختبارات التفاعلية</a>
+    <a href="#" onclick="scrollToSection('stats');closeMobileMenu();return false;">📊 الإحصائيات</a>
+  </div>
+
+  <!-- =============================
+       HERO SECTION
+  ============================== -->
+  <section id="hero" style="max-width:100%; padding: 0;">
+    <div style="min-height:100vh; display:flex; align-items:center; justify-content:center; position:relative; overflow:hidden; padding: 120px 24px 80px;">
+      <div class="hero-bg-grid"></div>
+      <div class="hero-blob blob-1"></div>
+      <div class="hero-blob blob-2"></div>
+
+      <div class="hero-content">
+        <div class="hero-badge">
+          <i data-lucide="zap" width="14" height="14"></i>
+          منصة تعليمية تفاعلية متكاملة
+        </div>
+
+        <h1 class="hero-title">
+          تعلّم بذكاء،<br/>
+          <span class="accent">ارتقِ بمستواك</span>
+        </h1>
+
+        <p class="hero-desc">
+          منصة LX Curricula FIATS توفر لك تجربة تعليمية فريدة من نوعها،
+          مع محتوى تفاعلي واختبارات ذكية لضمان أفضل نتيجة
+        </p>
+
+        <div class="hero-actions">
+          <button class="btn-primary" onclick="scrollToSection('exams')">
+            <i data-lucide="play-circle" width="18" height="18"></i>
+            ابدأ التعلم الآن
+          </button>
+          <button class="btn-secondary" onclick="scrollToSection('materials')">
+            <i data-lucide="book-open" width="18" height="18"></i>
+            استعرض المواد
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <div class="number">60</div>
+            <div class="label">سؤال تفاعلي</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="hero-stat">
+            <div class="number">3</div>
+            <div class="label">أنواع أسئلة</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="hero-stat">
+            <div class="number">1</div>
+            <div class="label">مادة دراسية</div>
+          </div>
+          <div class="stat-divider"></div>
+          <div class="hero-stat">
+            <div class="number">100%</div>
+            <div class="label">مجاني</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-sep"></div>
+
+  <!-- =============================
+       MATERIALS SECTION
+  ============================== -->
+  <section id="materials">
+    <div class="section-header reveal">
+      <div class="section-tag">
+        <i data-lucide="library" width="13" height="13"></i>
+        المواد الدراسية
+      </div>
+      <h2 class="section-title">المحتوى التعليمي</h2>
+      <p class="section-desc">اختر المادة التي تريد دراستها وابدأ رحلة التعلم التفاعلية</p>
+    </div>
+
+    <div id="materials-wrapper" class="reveal">
+      <!-- Materials grid inside -->
+      <div style="padding: 32px;">
+        <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(300px,1fr)); gap: 24px;">
+
+          <!-- Marketing Card -->
+          <div class="material-card" onclick="scrollToSection('exams')">
+            <div style="padding: 28px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px;">
+                <div class="material-icon-wrap">
+                  <i data-lucide="trending-up" width="28" height="28"></i>
+                </div>
+                <span class="material-tag" style="background:#fff0f0; color:#C10000; border:1px solid rgba(193,0,0,0.15);">
+                  <i data-lucide="star" width="10" height="10"></i> مميز
+                </span>
+              </div>
+              <h3 style="font-size:18px; font-weight:800; color:var(--text); margin-bottom:8px;">التسويق والتسويق الرقمي</h3>
+              <p style="font-size:13px; color:var(--muted); margin-bottom:20px; line-height:1.6;">
+                دراسة شاملة لمبادئ التسويق الحديث والرقمي، تحليل السوق، المزيج التسويقي، وأدوات التسويق الإلكتروني
+              </p>
+              <div style="display:flex; flex-wrap:wrap; gap:8px; margin-bottom:20px;">
+                <span style="background:var(--bg); border:1px solid var(--border); color:var(--muted); font-size:12px; padding:4px 10px; border-radius:6px; font-weight:600;">
+                  اختيار متعدد · 20 سؤال
+                </span>
+                <span style="background:var(--bg); border:1px solid var(--border); color:var(--muted); font-size:12px; padding:4px 10px; border-radius:6px; font-weight:600;">
+                  صح وخطأ · 20 سؤال
+                </span>
+                <span style="background:var(--bg); border:1px solid var(--border); color:var(--muted); font-size:12px; padding:4px 10px; border-radius:6px; font-weight:600;">
+                  أكمل الفراغ · 20 سؤال
+                </span>
+              </div>
+              <div style="display:flex; align-items:center; justify-content:space-between;">
+                <div style="display:flex; align-items:center; gap:8px; font-size:13px; color:var(--muted);">
+                  <i data-lucide="users" width="14" height="14"></i>
+                  <span>60 سؤال إجمالي</span>
+                </div>
+                <button class="btn-primary" style="padding:10px 20px; font-size:13px;" onclick="scrollToSection('exams'); event.stopPropagation();">
+                  <i data-lucide="arrow-left" width="15" height="15"></i>
+                  ابدأ الآن
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Coming Soon Card -->
+          <div class="material-card" style="opacity:0.6; cursor:default;">
+            <div style="padding: 28px;">
+              <div style="display:flex; align-items:flex-start; justify-content:space-between; gap:16px; margin-bottom:20px;">
+                <div class="material-icon-wrap">
+                  <i data-lucide="code-2" width="28" height="28"></i>
+                </div>
+                <span class="material-tag" style="background:#f0f9ff; color:#0284c7; border:1px solid rgba(2,132,199,0.15);">
+                  قريباً
+                </span>
+              </div>
+              <h3 style="font-size:18px; font-weight:800; color:var(--text); margin-bottom:8px;">مادة قادمة قريباً</h3>
+              <p style="font-size:13px; color:var(--muted); line-height:1.6;">سيتم إضافة مواد جديدة قريباً. ترقّب المزيد من المحتوى التعليمي المتميز</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-sep"></div>
+
+  <!-- =============================
+       EXAMS SECTION
+  ============================== -->
+  <section id="exams" style="max-width:1200px;">
+    <div class="section-header reveal">
+      <div class="section-tag">
+        <i data-lucide="brain" width="13" height="13"></i>
+        بنك الأسئلة التفاعلي
+      </div>
+      <h2 class="section-title">الاختبارات التفاعلية</h2>
+      <p class="section-desc">اختبر نفسك بأسئلة شاملة ومتنوعة واعرف مستواك الحقيقي</p>
+    </div>
+
+    <div id="exam-wrapper" class="reveal">
+      <!-- Header bar -->
+      <div class="exam-header-bar">
+        <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+          <div style="font-size:16px; font-weight:700; color:var(--text);">التسويق والتسويق الرقمي</div>
+          <div class="score-badge">
+            <i data-lucide="trophy" width="14" height="14"></i>
+            <span id="liveScore">0 / 0</span>
+          </div>
+        </div>
+        <div class="search-wrap">
+          <span class="search-icon"><i data-lucide="search" width="16" height="16"></i></span>
+          <input type="text" id="searchInput" placeholder="ابحث في الأسئلة..." oninput="filterQuestions()" />
+        </div>
+      </div>
+
+      <!-- Tabs -->
+      <div class="exam-tabs">
+        <button class="tab-btn active" onclick="switchTab('mcq', this)">
+          <i data-lucide="list-checks" width="16" height="16"></i>
+          اختيار من متعدد
+          <span class="tab-count">20</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('tf', this)">
+          <i data-lucide="check-circle" width="16" height="16"></i>
+          صح وخطأ
+          <span class="tab-count">20</span>
+        </button>
+        <button class="tab-btn" onclick="switchTab('fib', this)">
+          <i data-lucide="pencil-line" width="16" height="16"></i>
+          أكمل الفراغ
+          <span class="tab-count">20</span>
+        </button>
+      </div>
+
+      <!-- Questions Container -->
+      <div class="questions-grid" id="questionsContainer">
+        <!-- Rendered by JS -->
+      </div>
+
+      <!-- Actions Bar -->
+      <div class="exam-actions-bar">
+        <div style="font-size:14px; color:var(--muted); font-weight:500;" id="questionCount">
+          يتم عرض 0 سؤال
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-secondary" style="padding:10px 20px; font-size:13px;" onclick="resetCurrentTab()">
+            <i data-lucide="refresh-cw" width="15" height="15"></i>
+            إعادة هذا القسم
+          </button>
+          <button class="btn-primary" style="padding:10px 20px; font-size:13px;" onclick="scrollToSection('stats')">
+            <i data-lucide="bar-chart-2" width="15" height="15"></i>
+            عرض النتائج
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="section-sep"></div>
+
+  <!-- =============================
+       STATISTICS SECTION
+  ============================== -->
+  <section id="stats">
+    <div class="section-header reveal">
+      <div class="section-tag">
+        <i data-lucide="bar-chart-3" width="13" height="13"></i>
+        تقرير الأداء
+      </div>
+      <h2 class="section-title">إحصائياتك</h2>
+      <p class="section-desc">تابع تقدمك وراقب أدائك في الاختبارات بشكل تفصيلي</p>
+    </div>
+
+    <div class="stats-grid reveal">
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(193,0,0,0.1);">
+          <i data-lucide="help-circle" width="24" height="24" style="color:var(--accent);"></i>
+        </div>
+        <div class="stat-value" id="statTotal">60</div>
+        <div class="stat-label">إجمالي الأسئلة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(22,163,74,0.1);">
+          <i data-lucide="check-circle-2" width="24" height="24" style="color:#16a34a;"></i>
+        </div>
+        <div class="stat-value" id="statCorrect" style="color:#16a34a;">0</div>
+        <div class="stat-label">إجابات صحيحة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(193,0,0,0.1);">
+          <i data-lucide="x-circle" width="24" height="24" style="color:var(--accent);"></i>
+        </div>
+        <div class="stat-value" id="statWrong" style="color:var(--accent);">0</div>
+        <div class="stat-label">إجابات خاطئة</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-icon" style="background:rgba(234,179,8,0.1);">
+          <i data-lucide="clock" width="24" height="24" style="color:#d97706;"></i>
+        </div>
+        <div class="stat-value" id="statUnanswered" style="color:#d97706;">60</div>
+        <div class="stat-label">لم تُجَب بعد</div>
+      </div>
+    </div>
+
+    <!-- Progress Card -->
+    <div class="progress-card reveal">
+      <div class="progress-header">
+        <div>
+          <div class="progress-title">نسبة الإنجاز الكلية</div>
+          <div style="font-size:13px; color:var(--muted); margin-top:4px;">بناءً على جميع الأسئلة المُجابة</div>
+        </div>
+        <div class="progress-percent" id="progressPercent">0%</div>
+      </div>
+      <div class="progress-bar-wrap">
+        <div class="progress-bar-fill" id="progressBar"></div>
+      </div>
+      <div class="progress-details">
+        <div class="progress-detail">
+          <div class="pd-value" id="pdMCQ">0/20</div>
+          <div class="pd-label">اختيار متعدد</div>
+        </div>
+        <div class="progress-detail">
+          <div class="pd-value" id="pdTF">0/20</div>
+          <div class="pd-label">صح وخطأ</div>
+        </div>
+        <div class="progress-detail">
+          <div class="pd-value" id="pdFIB">0/20</div>
+          <div class="pd-label">أكمل الفراغ</div>
+        </div>
+      </div>
+    </div>
+
+    <div style="text-align:center; margin-top:32px;" class="reveal">
+      <button class="btn-primary" onclick="resetAllExams()" style="font-size:15px; padding:14px 36px;">
+        <i data-lucide="rotate-ccw" width="18" height="18"></i>
+        إعادة جميع الاختبارات
+      </button>
+    </div>
+  </section>
+
+  <div class="section-sep"></div>
+
+  <!-- =============================
+       FOOTER
+  ============================== -->
+  <footer>
+    <div class="footer-logo">
+      <div class="logo-icon">LX</div>
+      <div class="footer-name">LX Curricula FIATS</div>
+    </div>
+    <div style="display:flex; align-items:center; justify-content:center; gap:20px; flex-wrap:wrap; margin-bottom:16px;">
+      <a href="#" onclick="scrollToSection('hero');return false;" style="color:var(--muted); text-decoration:none; font-size:14px; font-weight:500; transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">الرئيسية</a>
+      <a href="#" onclick="scrollToSection('materials');return false;" style="color:var(--muted); text-decoration:none; font-size:14px; font-weight:500; transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">المواد</a>
+      <a href="#" onclick="scrollToSection('exams');return false;" style="color:var(--muted); text-decoration:none; font-size:14px; font-weight:500; transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">الاختبارات</a>
+      <a href="#" onclick="scrollToSection('stats');return false;" style="color:var(--muted); text-decoration:none; font-size:14px; font-weight:500; transition:var(--transition);" onmouseover="this.style.color='var(--accent)'" onmouseout="this.style.color='var(--muted)'">الإحصائيات</a>
+    </div>
+    <p class="footer-dev">
+      تم التطوير بواسطة: <span>عبد الرحمن محمد (Abdo LX)</span> &copy; 2026
+    </p>
+    <p style="font-size:12px; color:var(--muted); margin-top:8px; opacity:0.7;">LX Curricula FIATS — جميع الحقوق محفوظة</p>
+  </footer>
+
+
+  <!-- =============================
+       JAVASCRIPT
+  ============================== -->
+  <script>
+  // =============================================
+  // DATA: QUESTION BANKS
+  // =============================================
+
+  const mcqQuestions = [
+    {
+      id: 'mcq_1',
+      text: 'في المقارنة بين التسويق والمبيعات، يركز التسويق على:',
+      options: ['احتياج الشركة', 'احتياج السوق', 'القيمة النقدية', 'إغلاق الصفقة'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_2',
+      text: 'يعتبر الأب الروحي للتسويق الحديث هو:',
+      options: ['روبرت كينغ', 'بي آر سميث', 'فيليب كوتلر', 'جيم كولينز'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_3',
+      text: 'في تحليل SWOT، تعتبر التهديدات (Threats) والفرص (Opportunities):',
+      options: ['عوامل داخلية', 'عوامل خارجية', 'نقاط قوة', 'نقاط ضعف'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_4',
+      text: 'تحليل PESTLE يُستخدم لتقييم العوامل الستة التي تؤثر في مجريات الأعمال، ومنها:',
+      options: ['العوامل السياسية والاقتصادية', 'نقاط القوة والضعف', 'المنتج والسعر', 'المبيعات والأرباح'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 0
+    },
+    {
+      id: 'mcq_5',
+      text: 'في نموذج SOSTAC، المرحلة التي تجيب على سؤال "أين نريد أن نصل؟" هي مرحلة:',
+      options: ['تحليل الموقف', 'الإستراتيجية', 'الأهداف', 'التكتيكات'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_6',
+      text: 'لكي يكون الهدف التسويقي ذكياً (SMART)، يجب أن يكون الحرف "M" اختصاراً لـ:',
+      options: ['محدد', 'قابل للقياس', 'واقعي', 'محدد بوقت'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_7',
+      text: 'المزيج التسويقي المطور (7Ps) أضاف ثلاثة عناصر جديدة للمزيج القديم وهي:',
+      options: ['المنتج، السعر، الترويج', 'الأشخاص، العمليات، والأدلة المادية', 'المبيعات، التسويق، الإعلان', 'التخطيط، المراقبة، التوجيه'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_8',
+      text: 'المرحلة الأولى من القمع التسويقي (Marketing Funnel) هي:',
+      options: ['مرحلة التحول', 'مرحلة الشراء', 'مرحلة الوعي', 'مرحلة التفضيل'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_9',
+      text: 'تقسيم العملاء بناءً على العمر، والجنس، ومستوى الدخل يُعرف بالتقسيم:',
+      options: ['الجغرافي', 'الديموغرافي', 'السلوكي', 'النفسي'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_10',
+      text: 'واحدة من فوائد التسويق الرقمي هي القدرة على تتبع عدد الزيارات بدقة، ويسمى ذلك:',
+      options: ['وصول واسع ومحدد', 'توفير التكاليف', 'قياس الأداء وتحليل البيانات', 'المرونة وسرعة التنفيذ'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_11',
+      text: 'منصة تواصل اجتماعي مهنية تستهدف الأعمال والمهنيين وتستخدم للبحث عن فرص العمل:',
+      options: ['تيك توك', 'سناب شات', 'إنستجرام', 'لينكد إن'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 3
+    },
+    {
+      id: 'mcq_12',
+      text: 'التسويق الذي يتم فيه نقل المنتجات من العميل إلى الشركة المصنعة يُسمى:',
+      options: ['التسويق المباشر', 'التسويق من خلال وسطاء', 'التسويق المزدوج', 'التسويق العكسي'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 3
+    },
+    {
+      id: 'mcq_13',
+      text: 'من شروط تنفيذ المواقع الإلكترونية السبعة (7Cs)، الشرط الذي يعني توفير هيكل تنظيمي مفهوم هو:',
+      options: ['المحتوى', 'الوضوح', 'الاتصال', 'التخصيص'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_14',
+      text: 'الشريحة من العملاء (A) في تحليل التوجهات تتميز بـ:',
+      options: ['حساسية عالية للسعر', 'قدرة شرائية محدودة', 'قدرة شرائية عالية واهتمام بالمنتجات العضوية', 'تفضيل العروض والتخفيضات فقط'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_15',
+      text: 'مرحلة من دورة حياة المنتج تصل فيها المبيعات إلى ذروتها ثم تبدأ في الانخفاض تدريجياً:',
+      options: ['التطوير', 'النمو', 'النضج', 'الانحدار'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_16',
+      text: 'مؤشر يقيس نسبة الزوار الذين غادروا موقعك بدون التفاعل معه:',
+      options: ['معدل التحويل', 'معدل النقر', 'معدل الارتداد', 'عائد الاستثمار'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    },
+    {
+      id: 'mcq_17',
+      text: 'حساب التكلفة المالية اللازمة للحصول على عميل جديد يُعرف بـ:',
+      options: ['تكلفة الاكتساب', 'معدل النقر', 'متوسط قيمة العميل', 'معدل الولاء'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 0
+    },
+    {
+      id: 'mcq_18',
+      text: 'التسويق (B2B) يعني توجيه الأعمال نحو:',
+      options: ['المستهلكين الأفراد', 'الشركات الأخرى', 'الجهات الحكومية', 'الأسواق الدولية'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 1
+    },
+    {
+      id: 'mcq_19',
+      text: 'لتحليل حركة المرور على موقع الويب والتفاعلات الأساسية مثل عدد الزيارات، نستخدم أداة:',
+      options: ['Google Analytics', 'Facebook Insights', 'Hootsuite', 'Twitter Analytics'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 0
+    },
+    {
+      id: 'mcq_20',
+      text: 'استخدام الروايات والتجارب الشخصية للعملاء للتأثير عليهم يُعرف بـ:',
+      options: ['التسويق عبر محركات البحث', 'التسويق بالعمولة', 'التسويق عبر القصص', 'التسويق عبر الواقع المعزز'],
+      letters: ['A', 'B', 'C', 'D'],
+      correct: 2
+    }
+  ];
+
+  const tfQuestions = [
+    { id: 'tf_1', text: 'التسويق هو عملية قصيرة الأجل بينما المبيعات هي عملية طويلة الأجل.', correct: false },
+    { id: 'tf_2', text: 'تهدف المبيعات إلى ضمان رضا العميل، بينما يهدف التسويق إلى القيمة النقدية.', correct: false },
+    { id: 'tf_3', text: 'التسويق الرقمي يتم عن طريق استخدام الوسائل التكنولوجية الحديثة للتواصل مع العملاء.', correct: true },
+    { id: 'tf_4', text: 'مرحلة جمع المعلومات التسويقية تعتبر من أهم مراحل وظيفة التسويق.', correct: true },
+    { id: 'tf_5', text: 'في تحليل SWOT، تعتبر السمعة السيئة أو النقص في الإمكانيات من نقاط القوة.', correct: false },
+    { id: 'tf_6', text: 'التغيرات السياسية والاقتصادية ليس لها أي تأثير على التخطيط الإستراتيجي.', correct: false },
+    { id: 'tf_7', text: 'كلمة SOSTAC هي اختصار لست مراحل تبدأ بتحليل الموقف وتنتهي بالتحكم والمراقبة.', correct: true },
+    { id: 'tf_8', text: 'الهدف الذكي SMART يجب أن يكون قابلاً للقياس.', correct: true },
+    { id: 'tf_9', text: 'السعر Price هو العنصر المسؤول عن توفير الأموال للشركة.', correct: true },
+    { id: 'tf_10', text: 'الدليل المادي Physical Evidence يعني إثبات جودة المنتج.', correct: true },
+    { id: 'tf_11', text: 'التسويق الشخصي يشمل استخدام الإنترنت والشبكات الاجتماعية.', correct: false },
+    { id: 'tf_12', text: 'التسويق الرقمي يفتقر إلى المرونة مقارنة بالتقليدي.', correct: false },
+    { id: 'tf_13', text: 'البريد الإلكتروني لا يعتبر قناة تسويق رقمي فعالة.', correct: false },
+    { id: 'tf_14', text: 'التسويق الشفهي ينمو من خلال توصيات العملاء.', correct: true },
+    { id: 'tf_15', text: 'دورة حياة المنتج تبدأ بالانحدار وتنتهي بالتطوير.', correct: false },
+    { id: 'tf_16', text: 'معدل النقر CTR يقيس مدى تفاعل الجمهور.', correct: true },
+    { id: 'tf_17', text: 'لا توجد معوقات لتنفيذ التسويق الرقمي.', correct: false },
+    { id: 'tf_18', text: 'الموارد البشرية تشمل متخصصين ومديري حملات.', correct: true },
+    { id: 'tf_19', text: 'الشريحة C تتميز بقدرة شرائية عالية جداً فقط.', correct: false },
+    { id: 'tf_20', text: 'ROI يساعد في معرفة العائد المالي مقارنة بالتكلفة.', correct: true }
+  ];
+
+  const fibQuestions = [
+    { id: 'fib_1', text: 'المبيعات هي عملية تبادل تتم بين طرفين بهدف تحقيق ............ متبادلة.', answer: 'منفعة' },
+    { id: 'fib_2', text: 'في نموذج SWOT ترمز الحروف إلى نقاط القوة والضعف و............', answer: 'الفرص' },
+    { id: 'fib_3', text: 'تحليل ............ هو أداة لتحليل العوامل السياسية والاقتصادية والاجتماعية.', answer: 'PESTLE' },
+    { id: 'fib_4', text: 'SMART تعني محدد و............ وقابل للتنفيذ.', answer: 'قابل للقياس' },
+    { id: 'fib_5', text: 'المزيج التسويقي 4Ps يتكون من ............ والسعر والترويج والمكان.', answer: 'المنتج' },
+    { id: 'fib_6', text: 'القمع التسويقي يبدأ بمرحلة ............', answer: 'الوعي' },
+    { id: 'fib_7', text: 'تقسيم السوق الجغرافي يعتمد على نطاق ............ محدد.', answer: 'جغرافي' },
+    { id: 'fib_8', text: '............ هي العناصر التي تمكّن الشركة من إنتاج منتجات أفضل.', answer: 'الميزة التنافسية' },
+    { id: 'fib_9', text: 'من أسباب فشل التسويق الرقمي عدم وجود ............ واضحة.', answer: 'إستراتيجية' },
+    { id: 'fib_10', text: 'دورة حياة المنتج تمر بمراحل التطوير والإطلاق و............', answer: 'النمو' },
+    { id: 'fib_11', text: 'التسويق من خلال ............ يتم عبر تجار الجملة والتجزئة.', answer: 'وسطاء' },
+    { id: 'fib_12', text: 'منصة ............ تستخدم للتغريدات القصيرة.', answer: 'تويتر' },
+    { id: 'fib_13', text: 'في 7Cs يشير ............ إلى تخصيص تجربة المستخدم.', answer: 'Customization' },
+    { id: 'fib_14', text: '............ يعكس نسبة الزوار الذين قاموا بالتفاعل المطلوب.', answer: 'معدل التحويل' },
+    { id: 'fib_15', text: 'الموارد ............ تشمل تكاليف الإعلانات والأدوات.', answer: 'المالية' },
+    { id: 'fib_16', text: 'أداة ............ تُستخدم لتحليل حركة المرور على المواقع.', answer: 'Google Analytics' },
+    { id: 'fib_17', text: 'B2B يعني توجيه المبيعات من شركة إلى ............', answer: 'شركات أخرى' },
+    { id: 'fib_18', text: '............ هي الخطة التي توضح تنفيذ ومتابعة الإستراتيجيات.', answer: 'الخطة التسويقية' },
+    { id: 'fib_19', text: 'في مرحلة ............ تنخفض المبيعات بشكل كبير.', answer: 'الانحدار' },
+    { id: 'fib_20', text: 'التسويق الرقمي يوفر ............ مقارنة بالتسويق التقليدي.', answer: 'التكاليف' }
+  ];
+
+  // =============================================
+  // STATE MANAGEMENT
+  // =============================================
+
+  let currentTab = 'mcq';
+  let searchTerm = '';
+
+  // Score tracking per question
+  let scores = {};
+
+  // Load from localStorage
+  function loadScores() {
+    const saved = localStorage.getItem('lx_scores');
+    if (saved) {
+      try { scores = JSON.parse(saved); } catch(e) { scores = {}; }
+    }
+  }
+
+  function saveScores() {
+    localStorage.setItem('lx_scores', JSON.stringify(scores));
+    updateStats();
+  }
+
+  // =============================================
+  // DARK MODE
+  // =============================================
+
+  function toggleDark() {
+    const html = document.documentElement;
+    const isDark = html.getAttribute('data-theme') === 'dark';
+    if (isDark) {
+      html.removeAttribute('data-theme');
+      localStorage.setItem('lx_theme', 'light');
+      document.getElementById('darkIcon').setAttribute('data-lucide', 'moon');
+    } else {
+      html.setAttribute('data-theme', 'dark');
+      localStorage.setItem('lx_theme', 'dark');
+      document.getElementById('darkIcon').setAttribute('data-lucide', 'sun');
+    }
+    lucide.createIcons();
+  }
+
+  function loadTheme() {
+    const saved = localStorage.getItem('lx_theme');
+    if (saved === 'dark') {
+      document.documentElement.setAttribute('data-theme', 'dark');
+      document.getElementById('darkIcon').setAttribute('data-lucide', 'sun');
+    }
+  }
+
+  // =============================================
+  // NAVBAR
+  // =============================================
+
+  function initNavbar() {
+    const navbar = document.getElementById('navbar');
+    window.addEventListener('scroll', () => {
+      if (window.scrollY > 40) {
+        navbar.classList.add('scrolled');
+      } else {
+        navbar.classList.remove('scrolled');
+      }
+
+      // Scroll to top FAB
+      const fab = document.getElementById('scrollTopBtn');
+      if (window.scrollY > 400) {
+        fab.classList.add('visible');
+      } else {
+        fab.classList.remove('visible');
+      }
+
+      // Active nav
+      updateActiveNav();
+    });
+  }
+
+  function updateActiveNav() {
+    const sections = ['hero', 'materials', 'exams', 'stats'];
+    const links = document.querySelectorAll('.nav-links a');
+    let current = '';
+    sections.forEach(id => {
+      const el = document.getElementById(id) || document.querySelector('#' + id);
+      if (el) {
+        const rect = el.getBoundingClientRect();
+        if (rect.top <= 100) current = id;
+      }
+    });
+    links.forEach((link, i) => {
+      link.classList.toggle('active', sections[i] === current);
+    });
+  }
+
+  function toggleMobileMenu() {
+    document.getElementById('mobileMenu').classList.toggle('open');
+  }
+
+  function closeMobileMenu() {
+    document.getElementById('mobileMenu').classList.remove('open');
+  }
+
+  function scrollToSection(id) {
+    const el = document.getElementById(id);
+    if (el) {
+      const offset = 80;
+      const top = el.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top, behavior: 'smooth' });
+    }
+  }
+
+  // =============================================
+  // TOAST NOTIFICATIONS
+  // =============================================
+
+  function showToast(msg, type = 'info') {
+    const container = document.getElementById('toastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'toast';
+
+    const icons = { success: '✅', error: '❌', info: 'ℹ️', warning: '⚠️' };
+    const colors = {
+      success: 'border-color: #16a34a;',
+      error: 'border-color: var(--accent);',
+      info: 'border-color: var(--border);',
+      warning: 'border-color: #d97706;'
+    };
+
+    toast.style.cssText = colors[type] || colors.info;
+    toast.innerHTML = `<span class="toast-icon">${icons[type]||'ℹ️'}</span><span>${msg}</span>`;
+    container.appendChild(toast);
+
+    setTimeout(() => {
+      toast.classList.add('removing');
+      setTimeout(() => toast.remove(), 350);
+    }, 3000);
+  }
+
+  // =============================================
+  // RENDER MCQ
+  // =============================================
+
+  function renderMCQ(questions) {
+    return questions.map((q, idx) => {
+      const answered = scores[q.id];
+      const isAnswered = answered !== undefined;
+
+      const optionsHTML = q.options.map((opt, i) => {
+        let cls = 'option-btn';
+        if (isAnswered) {
+          if (i === q.correct) cls += ' correct';
+          else if (i === answered && answered !== q.correct) cls += ' wrong';
+        }
+        return `
+          <button class="${cls}"
+            onclick="answerMCQ('${q.id}', ${i}, ${q.correct}, this)"
+            ${isAnswered ? 'disabled' : ''}
+            data-index="${i}">
+            <span class="option-letter">${q.letters[i]}</span>
+            <span>${opt}</span>
+          </button>
+        `;
+      }).join('');
+
+      let feedbackHTML = '';
+      if (isAnswered) {
+        const isCorrect = answered === q.correct;
+        feedbackHTML = `
+          <div class="q-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}">
+            ${isCorrect
+              ? '<i data-lucide="check-circle-2" width="16" height="16"></i> إجابة صحيحة! أحسنت'
+              : `<i data-lucide="x-circle" width="16" height="16"></i> الإجابة الصحيحة: ${q.options[q.correct]}`
+            }
+          </div>
+        `;
+      }
+
+      return `
+        <div class="mcq-card" id="card_${q.id}" style="animation-delay:${idx * 0.04}s;">
+          <div class="q-number">${idx + 1}</div>
+          <div class="q-text">${q.text}</div>
+          <div class="options-list">${optionsHTML}</div>
+          ${feedbackHTML}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function answerMCQ(qId, chosen, correct, btn) {
+    if (scores[qId] !== undefined) return;
+    scores[qId] = chosen;
+    saveScores();
+
+    const card = document.getElementById('card_' + qId);
+    const options = card.querySelectorAll('.option-btn');
+    options.forEach((opt, i) => {
+      opt.disabled = true;
+      if (i === correct) opt.classList.add('correct');
+      else if (i === chosen && chosen !== correct) opt.classList.add('wrong');
+    });
+
+    const isCorrect = chosen === correct;
+
+    // Feedback
+    let fb = card.querySelector('.q-feedback');
+    if (!fb) {
+      fb = document.createElement('div');
+      fb.className = 'q-feedback';
+      card.appendChild(fb);
+    }
+    fb.className = `q-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+
+    const q = mcqQuestions.find(x => x.id === qId);
+    fb.innerHTML = isCorrect
+      ? '<i data-lucide="check-circle-2" width="16" height="16"></i> إجابة صحيحة! أحسنت'
+      : `<i data-lucide="x-circle" width="16" height="16"></i> الإجابة الصحيحة: ${q.options[q.correct]}`;
+
+    lucide.createIcons();
+    updateLiveScore();
+
+    if (isCorrect) showToast('إجابة صحيحة! 🎉', 'success');
+    else showToast('إجابة خاطئة، حاول مرة أخرى في سؤال آخر', 'error');
+  }
+
+  // =============================================
+  // RENDER TRUE/FALSE
+  // =============================================
+
+  function renderTF(questions) {
+    return questions.map((q, idx) => {
+      const answered = scores[q.id];
+      const isAnswered = answered !== undefined;
+
+      let trueClass = 'tf-btn true-btn';
+      let falseClass = 'tf-btn false-btn';
+
+      if (isAnswered) {
+        if (q.correct === true) {
+          trueClass += ' correct';
+          if (answered === false) falseClass += ' wrong';
+        } else {
+          falseClass += ' correct';
+          if (answered === true) trueClass += ' wrong';
+        }
+      }
+
+      let feedbackHTML = '';
+      if (isAnswered) {
+        const userAns = answered;
+        const isCorrect = userAns === q.correct;
+        feedbackHTML = `
+          <div class="q-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}">
+            ${isCorrect
+              ? '<i data-lucide="check-circle-2" width="16" height="16"></i> إجابة صحيحة!'
+              : `<i data-lucide="x-circle" width="16" height="16"></i> الإجابة الصحيحة: ${q.correct ? 'صح ✓' : 'خطأ ✗'}`
+            }
+          </div>
+        `;
+      }
+
+      return `
+        <div class="tf-card" id="card_${q.id}" style="animation-delay:${idx * 0.04}s;">
+          <div class="q-number">${idx + 1}</div>
+          <div class="q-text">${q.text}</div>
+          <div class="tf-buttons">
+            <button class="${trueClass}"
+              onclick="answerTF('${q.id}', true, ${q.correct})"
+              ${isAnswered ? 'disabled' : ''}>
+              <i data-lucide="check" width="16" height="16"></i> صح
+            </button>
+            <button class="${falseClass}"
+              onclick="answerTF('${q.id}', false, ${q.correct})"
+              ${isAnswered ? 'disabled' : ''}>
+              <i data-lucide="x" width="16" height="16"></i> خطأ
+            </button>
+          </div>
+          ${feedbackHTML}
+        </div>
+      `;
+    }).join('');
+  }
+
+  function answerTF(qId, chosen, correct) {
+    if (scores[qId] !== undefined) return;
+    scores[qId] = chosen;
+    saveScores();
+
+    const card = document.getElementById('card_' + qId);
+    const btns = card.querySelectorAll('.tf-btn');
+    btns.forEach(b => b.disabled = true);
+
+    const trueBtn = btns[0];
+    const falseBtn = btns[1];
+
+    if (correct === true) {
+      trueBtn.classList.add('correct');
+      if (chosen === false) falseBtn.classList.add('wrong');
+    } else {
+      falseBtn.classList.add('correct');
+      if (chosen === true) trueBtn.classList.add('wrong');
+    }
+
+    const isCorrect = chosen === correct;
+    let fb = card.querySelector('.q-feedback');
+    if (!fb) {
+      fb = document.createElement('div');
+      fb.className = 'q-feedback';
+      card.appendChild(fb);
+    }
+    fb.className = `q-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+    fb.innerHTML = isCorrect
+      ? '<i data-lucide="check-circle-2" width="16" height="16"></i> إجابة صحيحة!'
+      : `<i data-lucide="x-circle" width="16" height="16"></i> الإجابة الصحيحة: ${correct ? 'صح ✓' : 'خطأ ✗'}`;
+
+    lucide.createIcons();
+    updateLiveScore();
+
+    if (isCorrect) showToast('إجابة صحيحة! 🎉', 'success');
+    else showToast('إجابة خاطئة!', 'error');
+  }
+
+  // =============================================
+  // RENDER FILL IN BLANK
+  // =============================================
+
+  function renderFIB(questions) {
+    return questions.map((q, idx) => {
+      const answered = scores[q.id];
+      const isAnswered = answered !== undefined;
+
+      let revealContent = '';
+      if (isAnswered) {
+        const isCorrect = answered === true;
+        revealContent = `
+          <div class="flip-card flipped" id="flip_${q.id}">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <i data-lucide="eye-off" width="24" height="24"></i>
+                <span>اضغط لرؤية الإجابة</span>
+              </div>
+              <div class="flip-card-back">
+                <i data-lucide="check-circle" width="28" height="28" style="opacity:0.7;"></i>
+                <span>${q.answer}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      } else {
+        revealContent = `
+          <div class="fib-input-wrap">
+            <input class="fib-input" type="text" id="input_${q.id}" placeholder="اكتب إجابتك هنا..." />
+            <button class="fib-check-btn" onclick="checkFIB('${q.id}', '${q.answer.replace(/'/g,"\\'")}')">
+              تحقق
+            </button>
+          </div>
+          <div class="flip-card" id="flip_${q.id}" onclick="toggleFlip('${q.id}')" style="margin-top:12px;">
+            <div class="flip-card-inner">
+              <div class="flip-card-front">
+                <i data-lucide="eye-off" width="24" height="24"></i>
+                <span>اضغط لرؤية الإجابة</span>
+                <span class="flip-hint">انقر للكشف</span>
+              </div>
+              <div class="flip-card-back">
+                <i data-lucide="check-circle" width="28" height="28" style="opacity:0.7;"></i>
+                <span>${q.answer}</span>
+              </div>
+            </div>
+          </div>
+        `;
+      }
+
+      return `
+        <div class="fib-card" id="card_${q.id}" style="animation-delay:${idx * 0.04}s;">
+          <div class="q-number">${idx + 1}</div>
+          <div class="q-text">${q.text}</div>
+          ${revealContent}
+          ${isAnswered
+            ? `<div class="q-feedback show ${answered === true ? 'correct-fb' : 'wrong-fb'}">
+                ${answered === true
+                  ? '<i data-lucide="check-circle-2" width="16" height="16"></i> إجابة صحيحة!'
+                  : `<i data-lucide="x-circle" width="16" height="16"></i> إجابتك خاطئة، الإجابة الصحيحة: ${q.answer}`
+                }
+              </div>`
+            : ''
+          }
+        </div>
+      `;
+    }).join('');
+  }
+
+  function toggleFlip(qId) {
+    const card = document.getElementById('flip_' + qId);
+    if (card) card.classList.toggle('flipped');
+  }
+
+  function checkFIB(qId, correct) {
+    const input = document.getElementById('input_' + qId);
+    if (!input || !input.value.trim()) {
+      showToast('الرجاء كتابة إجابتك أولاً', 'warning');
+      return;
+    }
+
+    const userAns = input.value.trim();
+    const isCorrect = userAns.toLowerCase().trim() === correct.toLowerCase().trim();
+
+    scores[qId] = isCorrect;
+    saveScores();
+
+    const card = document.getElementById('card_' + qId);
+    const inputWrap = card.querySelector('.fib-input-wrap');
+    if (inputWrap) inputWrap.remove();
+
+    // Auto flip
+    const flipCard = document.getElementById('flip_' + qId);
+    if (flipCard) {
+      flipCard.classList.add('flipped');
+      flipCard.style.cursor = 'pointer';
+    }
+
+    let fb = card.querySelector('.q-feedback');
+    if (!fb) {
+      fb = document.createElement('div');
+      card.appendChild(fb);
+    }
+    fb.className = `q-feedback show ${isCorrect ? 'correct-fb' : 'wrong-fb'}`;
+    fb.innerHTML = isCorrect
+      ? '<i data-lucide="check-circle-2" width="16" height="16"></i> إجابة صحيحة!'
+      : `<i data-lucide="x-circle" width="16" height="16"></i> الإجابة الصحيحة: ${correct}`;
+
+    lucide.createIcons();
+    updateLiveScore();
+
+    if (isCorrect) showToast('إجابة صحيحة! 🎉', 'success');
+    else showToast('إجابة خاطئة!', 'error');
+  }
+
+  // =============================================
+  // TABS
+  // =============================================
+
+  function switchTab(tab, btn) {
+    currentTab = tab;
+    searchTerm = document.getElementById('searchInput').value;
+
+    // Update tab buttons
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    renderQuestions();
+  }
+
+  // =============================================
+  // FILTER / SEARCH
+  // =============================================
+
+  function filterQuestions() {
+    searchTerm = document.getElementById('searchInput').value.toLowerCase();
+    renderQuestions();
+  }
+
+  function getFilteredQuestions() {
+    let qs = [];
+    if (currentTab === 'mcq') qs = mcqQuestions;
+    else if (currentTab === 'tf') qs = tfQuestions;
+    else if (currentTab === 'fib') qs = fibQuestions;
+
+    if (searchTerm) {
+      qs = qs.filter(q => q.text.toLowerCase().includes(searchTerm));
+    }
+
+    return qs;
+  }
+
+  // =============================================
+  // RENDER
+  // =============================================
+
+  function renderQuestions() {
+    const container = document.getElementById('questionsContainer');
+    const filtered = getFilteredQuestions();
+
+    // Skeleton loader
+    container.innerHTML = Array(Math.min(filtered.length || 3, 6)).fill(0).map(() => `
+      <div style="background:var(--bg); border:1.5px solid var(--border); border-radius:16px; padding:24px;">
+        <div class="skeleton" style="height:20px; width:40px; margin-bottom:16px; border-radius:6px;"></div>
+        <div class="skeleton" style="height:16px; width:90%; margin-bottom:8px;"></div>
+        <div class="skeleton" style="height:16px; width:70%; margin-bottom:20px;"></div>
+        ${currentTab === 'mcq' ? Array(4).fill(0).map(() => `<div class="skeleton" style="height:44px; margin-bottom:8px; border-radius:10px;"></div>`).join('') : ''}
+        ${currentTab === 'tf' ? `<div style="display:flex;gap:10px;"><div class="skeleton" style="height:44px;flex:1;border-radius:10px;"></div><div class="skeleton" style="height:44px;flex:1;border-radius:10px;"></div></div>` : ''}
+        ${currentTab === 'fib' ? `<div class="skeleton" style="height:100px; border-radius:10px;"></div>` : ''}
+      </div>
+    `).join('');
+
+    // Render after short delay
+    setTimeout(() => {
+      if (filtered.length === 0) {
+        container.innerHTML = `
+          <div class="no-results">
+            <i data-lucide="search-x" width="48" height="48" style="color:var(--muted); margin-bottom:16px;"></i>
+            <div style="font-size:16px; font-weight:600; color:var(--text); margin-bottom:8px;">لا توجد نتائج</div>
+            <div style="font-size:14px;">لم يتم العثور على أسئلة تطابق بحثك</div>
+          </div>
+        `;
+      } else {
+        let html = '';
+        if (currentTab === 'mcq') html = renderMCQ(filtered);
+        else if (currentTab === 'tf') html = renderTF(filtered);
+        else if (currentTab === 'fib') html = renderFIB(filtered);
+        container.innerHTML = html;
+      }
+
+      document.getElementById('questionCount').textContent = `يتم عرض ${filtered.length} سؤال`;
+      lucide.createIcons();
+      updateLiveScore();
+    }, 400);
+  }
+
+  // =============================================
+  // SCORE
+  // =============================================
+
+  function updateLiveScore() {
+    updateStats();
+  }
+
+  function computeStats() {
+    let total = 60;
+    let answered = 0, correct = 0, wrong = 0;
+    let mcqCorrect = 0, tfCorrect = 0, fibCorrect = 0;
+    let mcqAnswered = 0, tfAnswered = 0, fibAnswered = 0;
+
+    mcqQuestions.forEach(q => {
+      if (scores[q.id] !== undefined) {
+        mcqAnswered++;
+        answered++;
+        if (scores[q.id] === q.correct) { correct++; mcqCorrect++; }
+        else wrong++;
+      }
+    });
+
+    tfQuestions.forEach(q => {
+      if (scores[q.id] !== undefined) {
+        tfAnswered++;
+        answered++;
+        // TF stores boolean
+        if (typeof scores[q.id] === 'boolean' && scores[q.id] === q.correct) { correct++; tfCorrect++; }
+        else wrong++;
+      }
+    });
+
+    fibQuestions.forEach(q => {
+      if (scores[q.id] !== undefined) {
+        fibAnswered++;
+        answered++;
+        // FIB stores true/false boolean
+        if (scores[q.id] === true) { correct++; fibCorrect++; }
+        else wrong++;
+      }
+    });
+
+    return { total, answered, correct, wrong, unanswered: total - answered,
+             mcqCorrect, mcqAnswered, tfCorrect, tfAnswered, fibCorrect, fibAnswered };
+  }
+
+  function updateStats() {
+    const s = computeStats();
+
+    document.getElementById('statTotal').textContent = s.total;
+    document.getElementById('statCorrect').textContent = s.correct;
+    document.getElementById('statWrong').textContent = s.wrong;
+    document.getElementById('statUnanswered').textContent = s.unanswered;
+
+    const pct = s.answered > 0 ? Math.round((s.correct / s.total) * 100) : 0;
+    document.getElementById('progressPercent').textContent = pct + '%';
+    document.getElementById('progressBar').style.width = pct + '%';
+
+    document.getElementById('pdMCQ').textContent = `${s.mcqCorrect} / ${s.mcqAnswered}`;
+    document.getElementById('pdTF').textContent = `${s.tfCorrect} / ${s.tfAnswered}`;
+    document.getElementById('pdFIB').textContent = `${s.fibCorrect} / ${s.fibAnswered}`;
+
+    document.getElementById('liveScore').textContent = `${s.correct} / ${s.answered}`;
+  }
+
+  // =============================================
+  // RESET
+  // =============================================
+
+  function resetCurrentTab() {
+    const ids = currentTab === 'mcq'
+      ? mcqQuestions.map(q => q.id)
+      : currentTab === 'tf'
+        ? tfQuestions.map(q => q.id)
+        : fibQuestions.map(q => q.id);
+
+    ids.forEach(id => delete scores[id]);
+    saveScores();
+    renderQuestions();
+    showToast('تم إعادة تعيين هذا القسم', 'info');
+  }
+
+  function resetAllExams() {
+    scores = {};
+    localStorage.removeItem('lx_scores');
+    renderQuestions();
+    updateStats();
+    showToast('تم إعادة تعيين جميع الاختبارات', 'info');
+  }
+
+  // =============================================
+  // SCROLL REVEAL
+  // =============================================
+
+  function initScrollReveal() {
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(entry => {
+        if (entry.isIntersecting) {
+          entry.target.classList.add('visible');
+        }
+      });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  }
+
+  // =============================================
+  // INIT
+  // =============================================
+
+  window.addEventListener('DOMContentLoaded', () => {
+    loadTheme();
+    loadScores();
+    initNavbar();
+
+    // Hide loading overlay
+    setTimeout(() => {
+      document.getElementById('loadingOverlay').classList.add('hidden');
+      setTimeout(() => {
+        document.getElementById('loadingOverlay').style.display = 'none';
+      }, 500);
+    }, 1800);
+
+    // Init icons
+    lucide.createIcons();
+
+    // Render questions
+    renderQuestions();
+    updateStats();
+
+    // Scroll reveal
+    setTimeout(initScrollReveal, 100);
+
+    // Welcome toast
+    setTimeout(() => {
+      showToast('مرحباً بك في منصة LX Curricula FIATS! 🎓', 'info');
+    }, 2200);
+
+    // Close mobile menu on outside click
+    document.addEventListener('click', (e) => {
+      const menu = document.getElementById('mobileMenu');
+      const hamburger = document.getElementById('hamburger');
+      if (!menu.contains(e.target) && !hamburger.contains(e.target)) {
+        menu.classList.remove('open');
+      }
+    });
+
+    // Allow Enter key in FIB inputs
+    document.getElementById('questionsContainer').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' && e.target.classList.contains('fib-input')) {
+        const input = e.target;
+        const qId = input.id.replace('input_', '');
+        const q = fibQuestions.find(x => x.id === qId);
+        if (q) checkFIB(qId, q.answer);
+      }
+    });
+
+    // Animated number counters for hero stats
+    function animateCounters() {
+      document.querySelectorAll('.hero-stat .number').forEach(el => {
+        const target = el.textContent.replace('%','');
+        const isPercent = el.textContent.includes('%');
+        if (!isNaN(target)) {
+          let count = 0;
+          const end = parseInt(target);
+          const duration = 1200;
+          const step = Math.max(1, Math.floor(end / (duration / 16)));
+          const timer = setInterval(() => {
+            count = Math.min(count + step, end);
+            el.textContent = count + (isPercent ? '%' : '');
+            if (count >= end) clearInterval(timer);
+          }, 16);
+        }
+      });
+    }
+
+    // Trigger counter animation when hero is visible
+    const heroObserver = new IntersectionObserver((entries) => {
+      if (entries[0].isIntersecting) {
+        setTimeout(animateCounters, 600);
+        heroObserver.disconnect();
+      }
+    });
+    const heroEl = document.getElementById('hero');
+    if (heroEl) heroObserver.observe(heroEl);
+  });
+  </script>
+
+</body>
+</html>
