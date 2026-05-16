@@ -1707,27 +1707,28 @@
       </div>
 
       <!-- Actions Bar -->
-     <div style="display:flex; gap:10px; flex-wrap:wrap;">
-  <button class="btn-secondary"
-    style="padding:10px 20px; font-size:13px;"
-    onclick="resetCurrentTab()">
-    <i data-lucide="refresh-cw" width="15" height="15"></i>
-    إعادة هذا القسم
-  </button>
-  <button class="btn-primary"
+ <div class="exam-actions-bar">
+        <div style="font-size:14px; color:var(--muted); font-weight:500;" id="questionCount">
+          يتم عرض 0 سؤال
+        </div>
+        <div style="display:flex; gap:10px; flex-wrap:wrap;">
+          <button class="btn-secondary" style="padding:10px 20px; font-size:13px;" onclick="resetCurrentTab()">
+            <i data-lucide="refresh-cw" width="15" height="15"></i>
+            إعادة هذا القسم
+          </button>
+           <button class="btn-primary"
     style="padding:10px 20px; font-size:13px;"
     id="nextSectionBtn"
     onclick="goToNextSection()">
+
     <i data-lucide="arrow-left" width="15" height="15"></i>
     التالي
   </button>
-  <button class="btn-primary"
-    style="padding:10px 20px; font-size:13px;"
-    onclick="scrollToSection('stats')">
-    <i data-lucide="bar-chart-2" width="15" height="15"></i>
-    عرض النتائج
-  </button>
-</div>
+          <button class="btn-primary" style="padding:10px 20px; font-size:13px;" onclick="scrollToSection('stats')">
+            <i data-lucide="bar-chart-2" width="15" height="15"></i>
+            عرض النتائج
+          </button>
+        </div>
       </div>
     </div>
   </section>
@@ -2737,7 +2738,45 @@
     const heroEl = document.getElementById('hero');
     if (heroEl) heroObserver.observe(heroEl);
   });
-    function goToNextSection() {
+ function goToNextSection() {
+
+  // من MCQ إلى TF
+  if(currentTab === 'mcq') {
+
+    switchTab(
+      'tf',
+      document.querySelectorAll('.tab-btn')[1]
+    );
+  }
+
+  // من TF إلى FIB
+  else if(currentTab === 'tf') {
+
+    switchTab(
+      'fib',
+      document.querySelectorAll('.tab-btn')[2]
+    );
+  }
+
+  // بعد FIB
+  else if(currentTab === 'fib') {
+
+    scrollToSection('stats');
+
+    showToast('🎉 ممتاز! خلصت كل الأقسام');
+  }
+
+  // يرجع لبداية القسم
+  setTimeout(() => {
+
+    document
+      .getElementById('exams')
+      .scrollIntoView({
+        behavior: 'smooth'
+      });
+
+  }, 200);
+}
 
   </script>
 
