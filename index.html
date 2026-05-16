@@ -1716,8 +1716,7 @@
             <i data-lucide="refresh-cw" width="15" height="15"></i>
             إعادة هذا القسم
           </button>
-      <button class="btn-primary" id="nextBtn">
-  <i data-lucide="arrow-left" width="15" height="15"></i>
+ <button class="btn-primary" id="nextBtn">
   التالي
 </button>
           <button class="btn-primary" style="padding:10px 20px; font-size:13px;" onclick="scrollToSection('stats')">
@@ -2689,13 +2688,25 @@
     loadScores();
     initNavbar();
 
+    // زرار التالي للموبايل
+    document.addEventListener('click', function(e) {
+
+        if (e.target.closest('#nextBtn')) {
+            nextSection();
+        }
+
+    });
+
     // Hide loading overlay
     setTimeout(() => {
       document.getElementById('loadingOverlay').classList.add('hidden');
+
       setTimeout(() => {
         document.getElementById('loadingOverlay').style.display = 'none';
       }, 500);
+
     }, 1800);
+});
 
     // Init icons
     lucide.createIcons();
